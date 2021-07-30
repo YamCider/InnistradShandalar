@@ -1,0 +1,15 @@
+GAMEPLAY:
+Set up a priority system for spells on the stack.
+Set up turn structure and phases.
+Make lands tap and generate mana to cast cards.
+Make creatures tap and set up the combat and damage resolution phase.
+Give players a lifepoint value and allow them to lose the game when it reaches zero.
+Figure out how to handle keywords like flying, first-strike, etc.
+
+DECK:
+Seperate player and opponent decks.
+Make decks editable and savable.
+
+UI:
+Set up the deck, graveyard, and exile screen regions.
+

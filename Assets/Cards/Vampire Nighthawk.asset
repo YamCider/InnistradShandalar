@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de90d58a983ed2c48a8beed20ced63de, type: 3}
+  m_Name: Vampire Nighthawk
+  m_EditorClassIdentifier: 
+  cardName: Vampire Nighthawk
+  cardType: Creature
+  cardSubtype1: Vampire
+  cardSubtype2: Shaman
+  cardArt: {fileID: 21300000, guid: 58fffb2ad4a955e4ebceef0bf60ae1a8, type: 3}
+  cmc: 3
+  power: 2
+  toughness: 3
