@@ -1,8 +1,6 @@
 GAMEPLAY:
-Set up a priority system for spells on the stack.
-Set up turn structure and phases.
-Make lands tap and generate mana to cast cards.
-Make creatures tap and set up the combat and damage resolution phase.
+Fix DragandDrop so creatures can no longer be dragged from the battlefield to the stack.
+Set up the combat and damage resolution phase.
 Give players a lifepoint value and allow them to lose the game when it reaches zero.
 Figure out how to handle keywords like flying, first-strike, etc.
 
