@@ -9,6 +9,7 @@ public class Card : ScriptableObject
     public string cardType;
     public string cardSubtype1;
     public string cardSubtype2;
+    public string stackSpeed;
 
     public Sprite cardArt;
 

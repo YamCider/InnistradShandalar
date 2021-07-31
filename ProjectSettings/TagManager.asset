@@ -7,6 +7,8 @@ TagManager:
   - Stack
   - EnemyCard
   - PlayerCard
+  - PlayerLandArea
+  - EnemyLandArea
   layers:
   - Default
   - TransparentFX

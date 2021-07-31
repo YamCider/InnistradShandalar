@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TheStack : MonoBehaviour
 {
-    CardDisplay cardDisplayScript;
+    CardDisplay[] cardDisplayScripts;
     RectTransform[] cardTransforms;
     
     public GameObject playerLandArea;
@@ -29,47 +29,99 @@ public class TheStack : MonoBehaviour
         Stack();
     }
 
-    //When cards are placed in the stack send them to the correct board zone.
+    //Sends cards back to the respective players hand if they are not supposed to be there.
     void Stack()
     {
 
         if (transform.childCount > 0)
         {
-            cardDisplayScript = gameObject.GetComponentInChildren<CardDisplay>();
+            cardDisplayScripts = gameObject.GetComponentsInChildren<CardDisplay>();
             cardTransforms = gameObject.GetComponentsInChildren<RectTransform>();
 
-            if (gameObject.transform.GetChild(0).CompareTag("PlayerCard"))
+            CardDisplay lastScript = cardDisplayScripts[cardDisplayScripts.Length - 1];
+            RectTransform lastTransform = cardTransforms[cardTransforms.Length - 1];
+
+            //If the card in the stack is a Player Card execute this code.
+            if (transform.GetChild(transform.childCount - 1).CompareTag("PlayerCard"))
             {
-                if (cardDisplayScript.card.cardType == "Basic Land" && !gameManagerScript.landPerTurnPlayer && (gameManagerScript.phase == "Main1" || gameManagerScript.phase == "Main2"))
+                //Store the amount of times passed so that if that spell is not supposed to be in the stack we can revert to this number.
+                int tempTimesPassed = gameManagerScript.timesPassed;
+
+                //If it is the players priority and we havent run this code before reset priority count to 0 and and mark this card so it isnt cleared from the stack when the enemy gains priority.
+                if(gameManagerScript.priority == "Player" && lastScript.wasCastThisPhase == false)
                 {
-                    cardTransforms[cardTransforms.Length - 1].SetParent(playerLandArea.transform, false);
-                    gameManager.GetComponent<GameManager>().landPerTurnPlayer = true;
+                    lastScript.wasCastThisPhase = true;
+                    gameManagerScript.timesPassed = 0;
                 }
-                else if (cardDisplayScript.card.cardType == "Creature")
+
+                //If it is not the players priority and this card was not marked as cast this turn put it back to hand.
+                if(gameManagerScript.priority != "Player" && lastScript.wasCastThisPhase == false)
                 {
-                    cardTransforms[cardTransforms.Length - 1].SetParent(playerBattlefield.transform, false);
+                    lastTransform.SetParent(playerHand.transform, false);
                 }
-                else
+                //If the spells stack speed isn't instant and we are not in the main phase with an empty stack revert the card to hand. Also revert to original priority count.
+                else if (lastScript.card.stackSpeed != "Instant" && ((gameManagerScript.phase != "Main1" && gameManagerScript.phase != "Main2") || gameObject.transform.childCount > 1))
                 {
-                    cardTransforms[cardTransforms.Length - 1].SetParent(playerHand.transform, false);
+                    gameManagerScript.timesPassed = tempTimesPassed;
+                    lastScript.wasCastThisPhase = false;
+                    lastTransform.SetParent(playerHand.transform, false);
                 }
+                
             }
-            else if (gameObject.transform.GetChild(0).CompareTag("EnemyCard"))
+            //If the card in the stack is an Enemy Card execute this code.
+            else if (transform.GetChild(transform.childCount - 1).CompareTag("EnemyCard"))
             {
-                if (cardDisplayScript.card.cardType == "Basic Land" && !gameManagerScript.landPerTurnEnemy && (gameManagerScript.phase == "Main1 Opp" || gameManagerScript.phase == "Main2 Opp"))
+                //Store the amount of times passed so that if that spell is not supposed to be in the stack we can revert to this number.
+                int tempTimesPassed = gameManagerScript.timesPassed;
+
+                //If it is the enemies priority and we havent run this code before reset priority count to 0 and and mark this card so it isnt cleared from the stack when the player gains priority.
+                if (gameManagerScript.priority == "Enemy" && lastScript.wasCastThisPhase == false)
                 {
-                    cardTransforms[cardTransforms.Length - 1].SetParent(enemyLandArea.transform, false);
-                    gameManager.GetComponent<GameManager>().landPerTurnEnemy = true;
+                    lastScript.wasCastThisPhase = true;
+                    gameManagerScript.timesPassed = 0;
                 }
-                else if (cardDisplayScript.card.cardType == "Creature")
+
+                //If it is not the enemies priority and this card was not marked as cast this turn put it back to hand.
+                if (gameManagerScript.priority != "Enemy" && lastScript.wasCastThisPhase == false)
                 {
-                    cardTransforms[cardTransforms.Length - 1].SetParent(enemyBattlefield.transform, false);
+                    lastTransform.SetParent(enemyHand.transform, false);
                 }
-                else
+                //If the spells stack speed isn't instant and we are not in the main phase with an empty stack revert the card to hand. Also revert to original priority count.
+                else if (lastScript.card.stackSpeed != "Instant" && ((gameManagerScript.phase != "Main1 Opp" && gameManagerScript.phase != "Main2 Opp") || gameObject.transform.childCount > 1))
                 {
-                    cardTransforms[cardTransforms.Length - 1].SetParent(enemyHand.transform, false);
+                    gameManagerScript.timesPassed = tempTimesPassed;
+                    lastScript.wasCastThisPhase = false;
+                    lastTransform.SetParent(enemyHand.transform, false);
                 }
+
             }
         }
+    }
+
+    //Resolves the top spell in the stack.
+    public void ResolveStack()
+    {
+        cardDisplayScripts = gameObject.GetComponentsInChildren<CardDisplay>();
+        cardTransforms = gameObject.GetComponentsInChildren<RectTransform>();
+
+        CardDisplay lastScript = cardDisplayScripts[cardDisplayScripts.Length - 1];
+        RectTransform lastTransform = cardTransforms[cardTransforms.Length - 1];
+
+        if (transform.GetChild(transform.childCount - 1).CompareTag("PlayerCard"))
+        {
+            if (lastScript.card.cardType == "Creature")
+            {
+                lastTransform.SetParent(playerBattlefield.transform, false);
+            }
+        }
+        else if (transform.GetChild(transform.childCount - 1).CompareTag("EnemyCard"))
+        {
+            
+            if (lastScript.card.cardType == "Creature")
+            {
+                lastTransform.SetParent(enemyBattlefield.transform, false);
+            }
+        }
+
     }
 }

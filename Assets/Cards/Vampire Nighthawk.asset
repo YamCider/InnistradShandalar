@@ -16,6 +16,7 @@ MonoBehaviour:
   cardType: Creature
   cardSubtype1: Vampire
   cardSubtype2: Shaman
+  stackSpeed: Sorcery
   cardArt: {fileID: 21300000, guid: 58fffb2ad4a955e4ebceef0bf60ae1a8, type: 3}
   cmc: 3
   power: 2

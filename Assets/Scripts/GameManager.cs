@@ -2,15 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject manaPool;
     public GameObject phaseIndicator;
     public bool landPerTurnPlayer = false;
     public bool landPerTurnEnemy = false;
     public GameObject playerLandArea;
     public GameObject enemyLandArea;
+    public GameObject playerBattlefield;
+    public GameObject enemyBattlefield;
+    public GameObject theStack;
     public string phase = null;
+    public string priority = null;
+    public int timesPassed = 0;
 
     GameObject untap;
     GameObject upkeep;
@@ -33,7 +40,20 @@ public class GameManager : MonoBehaviour
     GameObject main2Opp;
     GameObject endOpp;
 
-    bool isGameRunning = false;
+    int playerManaRed = 0;
+    int playerManaBlue = 0;
+    int playerManaGreen = 0;
+    int playerManaBlack = 0;
+    int playerManaWhite = 0;
+    int playerManaColorless = 0;
+
+    int enemyManaRed = 0;
+    int enemyManaBlue = 0;
+    int enemyManaGreen = 0;
+    int enemyManaBlack = 0;
+    int enemyManaWhite = 0;
+    int enemyManaColorless = 0;
+
 
     // Start is called before the first frame update
     void Start()
@@ -72,16 +92,18 @@ public class GameManager : MonoBehaviour
     {
         int coinFlip = Random.Range(0, 2);
 
-        isGameRunning = true;
-
         if(coinFlip == 0)
         {
             phase = "Main1";
+            SetPriority("Player");
+            timesPassed = 0;
             SetTickColor(main1, 1, 0, 0, 1);
         }
         else
         {
             phase = "Main1 Opp";
+            SetPriority("Enemy");
+            timesPassed = 0;
             SetTickColor(main1Opp, 1, 0, 0, 1);
         }
 
@@ -89,132 +111,197 @@ public class GameManager : MonoBehaviour
 
     public void NextPhase()
     {
-        switch(phase)
+        timesPassed++;
+
+        if(priority == "Player")
         {
-            case "Untap":
-                phase = "Upkeep";
-                landPerTurnPlayer = false;
-                SetTickColor(upkeep, 1, 0, 0, 1);
-                SetTickColor(untap, 1, 1, 1, 1);
-                break;
-
-            case "Untap Opp":
-                phase = "Upkeep Opp";
-                landPerTurnEnemy = false;
-                SetTickColor(upkeepOpp, 1, 0, 0, 1);
-                SetTickColor(untapOpp, 1, 1, 1, 1);
-                break;
-
-            case "Upkeep":
-                phase = "Draw";
-                SetTickColor(draw, 1, 0, 0, 1);
-                SetTickColor(upkeep, 1, 1, 1, 1);
-                break;
-
-            case "Upkeep Opp":
-                phase = "Draw Opp";
-                SetTickColor(drawOpp, 1, 0, 0, 1);
-                SetTickColor(upkeepOpp, 1, 1, 1, 1);
-                break;
-
-            case "Draw":
-                phase = "Main1";
-                SetTickColor(main1, 1, 0, 0, 1);
-                SetTickColor(draw, 1, 1, 1, 1);
-                break;
-
-            case "Draw Opp":
-                phase = "Main1 Opp";
-                SetTickColor(main1Opp, 1, 0, 0, 1);
-                SetTickColor(drawOpp, 1, 1, 1, 1);
-                break;
-
-            case "Main1":
-                phase = "Begin Combat";
-                SetTickColor(beginCombat, 1, 0, 0, 1);
-                SetTickColor(main1, 1, 1, 1, 1);
-                break;
-
-            case "Main1 Opp":
-                phase = "Begin Combat Opp";
-                SetTickColor(beginCombatOpp, 1, 0, 0, 1);
-                SetTickColor(main1Opp, 1, 1, 1, 1);
-                break;
-
-            case "Begin Combat":
-                phase = "Attackers";
-                SetTickColor(attackers, 1, 0, 0, 1);
-                SetTickColor(beginCombat, 1, 1, 1, 1);
-                break;
-
-            case "Begin Combat Opp":
-                phase = "Attackers Opp";
-                SetTickColor(attackersOpp, 1, 0, 0, 1);
-                SetTickColor(beginCombatOpp, 1, 1, 1, 1);
-                break;
-
-            case "Attackers":
-                phase = "Blockers";
-                SetTickColor(blockers, 1, 0, 0, 1);
-                SetTickColor(attackers, 1, 1, 1, 1);
-                break;
-
-            case "Attackers Opp":
-                phase = "Blockers Opp";
-                SetTickColor(blockersOpp, 1, 0, 0, 1);
-                SetTickColor(attackersOpp, 1, 1, 1, 1);
-                break;
-
-            case "Blockers":
-                phase = "Damage";
-                SetTickColor(damage, 1, 0, 0, 1);
-                SetTickColor(blockers, 1, 1, 1, 1);
-                break;
-
-            case "Blockers Opp":
-                phase = "Damage Opp";
-                SetTickColor(damageOpp, 1, 0, 0, 1);
-                SetTickColor(blockersOpp, 1, 1, 1, 1);
-                break;
-
-            case "Damage":
-                phase = "Main2";
-                SetTickColor(main2, 1, 0, 0, 1);
-                SetTickColor(damage, 1, 1, 1, 1);
-                break;
-
-            case "Damage Opp":
-                phase = "Main2 Opp";
-                SetTickColor(main2Opp, 1, 0, 0, 1);
-                SetTickColor(damageOpp, 1, 1, 1, 1);
-                break;
-
-            case "Main2":
-                phase = "End";
-                SetTickColor(end, 1, 0, 0, 1);
-                SetTickColor(main2, 1, 1, 1, 1);
-                break;
-
-            case "Main2 Opp":
-                phase = "End Opp";
-                SetTickColor(endOpp, 1, 0, 0, 1);
-                SetTickColor(main2Opp, 1, 1, 1, 1);
-                break;
-
-            case "End":
-                phase = "Untap Opp";
-                SetTickColor(untapOpp, 1, 0, 0, 1);
-                SetTickColor(end, 1, 1, 1, 1);
-                UntapEnemyLands();
-                break;
-
-            case "End Opp":
-                phase = "Untap";
-                SetTickColor(untap, 1, 0, 0, 1);
-                SetTickColor(endOpp, 1, 1, 1, 1);
-                UntapPlayerLands();
-                break;
+            SetPriority("Enemy");
         }
+        else if(priority == "Enemy")
+        {
+            SetPriority("Player");
+        }
+
+        if((timesPassed >= 2 && theStack.transform.childCount == 0) || priority == "Nobody")
+        {
+            timesPassed = 0;
+
+            switch (phase)
+            {
+                case "Untap":
+                    phase = "Upkeep";
+                    landPerTurnPlayer = false;
+                    SetTickColor(upkeep, 1, 0, 0, 1);
+                    SetTickColor(untap, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Player");
+                    break;
+
+                case "Untap Opp":
+                    phase = "Upkeep Opp";
+                    landPerTurnEnemy = false;
+                    SetTickColor(upkeepOpp, 1, 0, 0, 1);
+                    SetTickColor(untapOpp, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Enemy");
+                    break;
+
+                case "Upkeep":
+                    phase = "Draw";
+                    SetTickColor(draw, 1, 0, 0, 1);
+                    SetTickColor(upkeep, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Player");
+                    break;
+
+                case "Upkeep Opp":
+                    phase = "Draw Opp";
+                    SetTickColor(drawOpp, 1, 0, 0, 1);
+                    SetTickColor(upkeepOpp, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Enemy");
+                    break;
+
+                case "Draw":
+                    phase = "Main1";
+                    SetTickColor(main1, 1, 0, 0, 1);
+                    SetTickColor(draw, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Player");
+                    break;
+
+                case "Draw Opp":
+                    phase = "Main1 Opp";
+                    SetTickColor(main1Opp, 1, 0, 0, 1);
+                    SetTickColor(drawOpp, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Enemy");
+                    break;
+
+                case "Main1":
+                    phase = "Begin Combat";
+                    SetTickColor(beginCombat, 1, 0, 0, 1);
+                    SetTickColor(main1, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Player");
+                    break;
+
+                case "Main1 Opp":
+                    phase = "Begin Combat Opp";
+                    SetTickColor(beginCombatOpp, 1, 0, 0, 1);
+                    SetTickColor(main1Opp, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Enemy");
+                    break;
+
+                case "Begin Combat":
+                    phase = "Attackers";
+                    SetTickColor(attackers, 1, 0, 0, 1);
+                    SetTickColor(beginCombat, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Player");
+                    break;
+
+                case "Begin Combat Opp":
+                    phase = "Attackers Opp";
+                    SetTickColor(attackersOpp, 1, 0, 0, 1);
+                    SetTickColor(beginCombatOpp, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Enemy");
+                    break;
+
+                case "Attackers":
+                    phase = "Blockers";
+                    SetTickColor(blockers, 1, 0, 0, 1);
+                    SetTickColor(attackers, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Player");
+                    break;
+
+                case "Attackers Opp":
+                    phase = "Blockers Opp";
+                    SetTickColor(blockersOpp, 1, 0, 0, 1);
+                    SetTickColor(attackersOpp, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Enemy");
+                    break;
+
+                case "Blockers":
+                    phase = "Damage";
+                    SetTickColor(damage, 1, 0, 0, 1);
+                    SetTickColor(blockers, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Player");
+                    break;
+
+                case "Blockers Opp":
+                    phase = "Damage Opp";
+                    SetTickColor(damageOpp, 1, 0, 0, 1);
+                    SetTickColor(blockersOpp, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Enemy");
+                    break;
+
+                case "Damage":
+                    phase = "Main2";
+                    SetTickColor(main2, 1, 0, 0, 1);
+                    SetTickColor(damage, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Player");
+                    break;
+
+                case "Damage Opp":
+                    phase = "Main2 Opp";
+                    SetTickColor(main2Opp, 1, 0, 0, 1);
+                    SetTickColor(damageOpp, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Enemy");
+                    break;
+
+                case "Main2":
+                    phase = "End";
+                    SetTickColor(end, 1, 0, 0, 1);
+                    SetTickColor(main2, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Player");
+                    break;
+
+                case "Main2 Opp":
+                    phase = "End Opp";
+                    SetTickColor(endOpp, 1, 0, 0, 1);
+                    SetTickColor(main2Opp, 1, 1, 1, 1);
+                    EmptyManaPools();
+                    SetPriority("Enemy");
+                    break;
+
+                case "End":
+                    phase = "Untap Opp";
+                    SetTickColor(untapOpp, 1, 0, 0, 1);
+                    SetTickColor(end, 1, 1, 1, 1);
+                    UntapEnemyLands();
+                    UntapEnemyBattlefield();
+                    EmptyManaPools();
+                    SetPriority("Nobody");
+                    break;
+
+                case "End Opp":
+                    phase = "Untap";
+                    SetTickColor(untap, 1, 0, 0, 1);
+                    SetTickColor(endOpp, 1, 1, 1, 1);
+                    UntapPlayerLands();
+                    UntapPlayerBattlefield();
+                    EmptyManaPools();
+                    SetPriority("Nobody");
+                    break;
+            }
+        }
+        else if (timesPassed >= 2)
+        {
+            timesPassed = 0;
+
+            theStack.GetComponent<TheStack>().ResolveStack();
+        }
+        
     }
 
     //Set the color of the tickBox passed to the rgba value passed.
@@ -241,5 +328,132 @@ public class GameManager : MonoBehaviour
         {
             child.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
+    }
+
+    void UntapPlayerBattlefield()
+    {
+        foreach (Transform child in playerBattlefield.transform)
+        {
+            child.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+
+    void UntapEnemyBattlefield()
+    {
+        foreach (Transform child in enemyBattlefield.transform)
+        {
+            child.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+
+    //Set all mana pools to zero and update mana pool UI.
+    void EmptyManaPools()
+    {
+        playerManaRed = 0;
+        manaPool.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Red: " + playerManaRed.ToString();
+        playerManaBlue = 0;
+        manaPool.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Blue: " + playerManaBlue.ToString();
+        playerManaGreen = 0;
+        manaPool.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Green: " + playerManaGreen.ToString();
+        playerManaBlack = 0;
+        manaPool.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = "Black: " + playerManaBlack.ToString();
+        playerManaWhite = 0;
+        manaPool.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = "White: " + playerManaWhite.ToString();
+        playerManaColorless = 0;
+        manaPool.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Colorless: " + playerManaColorless.ToString();
+
+        enemyManaRed = 0;
+        enemyManaBlue = 0;
+        enemyManaGreen = 0;
+        enemyManaBlack = 0;
+        enemyManaWhite = 0;
+        enemyManaColorless = 0;
+    }
+
+    void SetPriority(string player)
+    {
+        priority = player;
+        phaseIndicator.transform.GetChild(20).GetComponent<TextMeshProUGUI>().text = "Priority: " + player;
+
+    }
+
+    //Add one to the correct players mana pool depending on the color and player input. Then update mana pool UI.
+    public void addToManaPool(char color, string player)
+    {
+        if(player == "Player")
+        {
+            switch(color)
+            {
+                case 'r':
+                    playerManaRed++;
+                    manaPool.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Red: " + playerManaRed.ToString();
+                    break;
+
+                case 'u':
+                    playerManaBlue++;
+                    manaPool.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Blue: " + playerManaBlue.ToString();
+                    break;
+
+                case 'g':
+                    playerManaGreen++;
+                    manaPool.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Green: " + playerManaGreen.ToString();
+                    break;
+
+                case 'b':
+                    playerManaBlack++;
+                    manaPool.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = "Black: " + playerManaBlack.ToString();
+                    break;
+
+                case 'w':
+                    playerManaWhite++;
+                    manaPool.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = "White: " + playerManaWhite.ToString();
+                    break;
+
+                case 'c':
+                    playerManaColorless++;
+                    manaPool.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Colorless: " + playerManaColorless.ToString();
+                    break;
+            }
+        
+        }
+        else if(player == "Enemy")
+        {
+            switch (color)
+            {
+                case 'r':
+                    enemyManaRed++;
+                    Debug.Log("Red: " + enemyManaRed.ToString());
+                    break;
+
+                case 'u':
+                    enemyManaBlue++;
+                    Debug.Log("Blue: " + enemyManaBlue.ToString());
+                    break;
+
+                case 'g':
+                    enemyManaGreen++;
+                    Debug.Log("Green: " + enemyManaGreen.ToString());
+                    break;
+
+                case 'b':
+                    enemyManaBlack++;
+                    Debug.Log("Black: " + enemyManaBlack.ToString());
+                    break;
+
+                case 'w':
+                    enemyManaWhite++;
+                    Debug.Log("White: " + enemyManaWhite.ToString());
+                    break;
+
+                case 'c':
+                    enemyManaColorless++;
+                    Debug.Log("Colorless: " + enemyManaColorless.ToString());
+                    break;
+            }
+        }
+            
+
+
+        
     }
 }

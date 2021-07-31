@@ -16,6 +16,7 @@ MonoBehaviour:
   cardType: Basic Land
   cardSubtype1: Swamp
   cardSubtype2: Null
+  stackSpeed: Null
   cardArt: {fileID: 21300000, guid: 88ee3279bf3b2d54ebc6d343239efe74, type: 3}
   cmc: 0
   power: 0
