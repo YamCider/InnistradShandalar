@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 930760643388275577}
   m_Layer: 5
   m_Name: Enemy Hand
-  m_TagString: Untagged
+  m_TagString: EnemyHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

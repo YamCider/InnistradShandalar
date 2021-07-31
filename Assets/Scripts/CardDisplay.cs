@@ -12,6 +12,7 @@ public class CardDisplay : MonoBehaviour, IPointerDownHandler
     public GameObject enemyLandArea;
     public GameObject enemyBattlefield;
     public bool wasCastThisPhase = false;
+    public bool manaPaid = false;
 
     private Image image;
     private RectTransform cardRotation;
@@ -45,13 +46,13 @@ public class CardDisplay : MonoBehaviour, IPointerDownHandler
                 if (card.cardSubtype1 == "Island" || card.cardSubtype2 == "Island")
                 {
                     Debug.Log("This is an island!");
-                    gameManagerScript.addToManaPool('u', "Player");
+                    gameManagerScript.addToManaPool('u', "Player", 1);
                 }
 
                 if (card.cardSubtype1 == "Swamp" || card.cardSubtype2 == "Swamp")
                 {
                     Debug.Log("This is a swamp!");
-                    gameManagerScript.addToManaPool('b', "Player");
+                    gameManagerScript.addToManaPool('b', "Player", 1);
                 }
             }
 
@@ -65,13 +66,13 @@ public class CardDisplay : MonoBehaviour, IPointerDownHandler
                 if (card.cardSubtype1 == "Island" || card.cardSubtype2 == "Island")
                 {
                     Debug.Log("This is an island!");
-                    gameManagerScript.addToManaPool('u', "Enemy");
+                    gameManagerScript.addToManaPool('u', "Enemy", 1);
                 }
 
                 if (card.cardSubtype1 == "Swamp" || card.cardSubtype2 == "Swamp")
                 {
                     Debug.Log("This is a swamp!");
-                    gameManagerScript.addToManaPool('b', "Enemy");
+                    gameManagerScript.addToManaPool('b', "Enemy", 1);
                 }
             }
 
@@ -83,7 +84,6 @@ public class CardDisplay : MonoBehaviour, IPointerDownHandler
                 transform.rotation = Quaternion.Euler(0, 0, -90);
             }
         }
-
 
     }
 

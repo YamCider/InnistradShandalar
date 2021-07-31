@@ -5259,6 +5259,7 @@ MonoBehaviour:
   theStack: {fileID: 438644174}
   phase: 
   priority: 
+  timesPassed: 0
 --- !u!4 &1529923671
 Transform:
   m_ObjectHideFlags: 0
@@ -8845,10 +8846,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1955993090}
     m_Modifications:
-    - target: {fileID: 7312457719955699562, guid: c618b706b7b17c242821be30928ab12b, type: 3}
-      propertyPath: m_Spacing.x
-      value: 20
-      objectReference: {fileID: 0}
     - target: {fileID: 7312457719955699564, guid: c618b706b7b17c242821be30928ab12b, type: 3}
       propertyPath: m_Name
       value: Player Hand

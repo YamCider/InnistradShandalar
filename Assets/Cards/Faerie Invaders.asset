@@ -21,3 +21,10 @@ MonoBehaviour:
   cmc: 5
   power: 3
   toughness: 3
+  redManaCost: 0
+  blueManaCost: 1
+  greeanManaCost: 0
+  blackManaCost: 0
+  whiteManaCost: 0
+  colorlessManaCost: 0
+  genericManaCost: 4

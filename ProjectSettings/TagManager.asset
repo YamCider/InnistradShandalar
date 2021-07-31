@@ -9,6 +9,8 @@ TagManager:
   - PlayerCard
   - PlayerLandArea
   - EnemyLandArea
+  - PlayerHand
+  - EnemyHand
   layers:
   - Default
   - TransparentFX

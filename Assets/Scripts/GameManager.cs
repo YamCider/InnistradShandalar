@@ -19,6 +19,20 @@ public class GameManager : MonoBehaviour
     public string priority = null;
     public int timesPassed = 0;
 
+    public int playerManaRed = 0;
+    public int playerManaBlue = 0;
+    public int playerManaGreen = 0;
+    public int playerManaBlack = 0;
+    public int playerManaWhite = 0;
+    public int playerManaColorless = 0;
+
+    public int enemyManaRed = 0;
+    public int enemyManaBlue = 0;
+    public int enemyManaGreen = 0;
+    public int enemyManaBlack = 0;
+    public int enemyManaWhite = 0;
+    public int enemyManaColorless = 0;
+
     GameObject untap;
     GameObject upkeep;
     GameObject draw;
@@ -40,19 +54,7 @@ public class GameManager : MonoBehaviour
     GameObject main2Opp;
     GameObject endOpp;
 
-    int playerManaRed = 0;
-    int playerManaBlue = 0;
-    int playerManaGreen = 0;
-    int playerManaBlack = 0;
-    int playerManaWhite = 0;
-    int playerManaColorless = 0;
-
-    int enemyManaRed = 0;
-    int enemyManaBlue = 0;
-    int enemyManaGreen = 0;
-    int enemyManaBlack = 0;
-    int enemyManaWhite = 0;
-    int enemyManaColorless = 0;
+    
 
 
     // Start is called before the first frame update
@@ -378,39 +380,39 @@ public class GameManager : MonoBehaviour
     }
 
     //Add one to the correct players mana pool depending on the color and player input. Then update mana pool UI.
-    public void addToManaPool(char color, string player)
+    public void addToManaPool(char color, string player, int amount)
     {
         if(player == "Player")
         {
             switch(color)
             {
                 case 'r':
-                    playerManaRed++;
+                    playerManaRed += amount;
                     manaPool.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Red: " + playerManaRed.ToString();
                     break;
 
                 case 'u':
-                    playerManaBlue++;
+                    playerManaBlue += amount;
                     manaPool.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Blue: " + playerManaBlue.ToString();
                     break;
 
                 case 'g':
-                    playerManaGreen++;
+                    playerManaGreen += amount;
                     manaPool.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "Green: " + playerManaGreen.ToString();
                     break;
 
                 case 'b':
-                    playerManaBlack++;
+                    playerManaBlack += amount;
                     manaPool.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = "Black: " + playerManaBlack.ToString();
                     break;
 
                 case 'w':
-                    playerManaWhite++;
+                    playerManaWhite += amount;
                     manaPool.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = "White: " + playerManaWhite.ToString();
                     break;
 
                 case 'c':
-                    playerManaColorless++;
+                    playerManaColorless += amount;
                     manaPool.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Colorless: " + playerManaColorless.ToString();
                     break;
             }
@@ -421,32 +423,32 @@ public class GameManager : MonoBehaviour
             switch (color)
             {
                 case 'r':
-                    enemyManaRed++;
+                    enemyManaRed += amount;
                     Debug.Log("Red: " + enemyManaRed.ToString());
                     break;
 
                 case 'u':
-                    enemyManaBlue++;
+                    enemyManaBlue += amount;
                     Debug.Log("Blue: " + enemyManaBlue.ToString());
                     break;
 
                 case 'g':
-                    enemyManaGreen++;
+                    enemyManaGreen += amount;
                     Debug.Log("Green: " + enemyManaGreen.ToString());
                     break;
 
                 case 'b':
-                    enemyManaBlack++;
+                    enemyManaBlack += amount;
                     Debug.Log("Black: " + enemyManaBlack.ToString());
                     break;
 
                 case 'w':
-                    enemyManaWhite++;
+                    enemyManaWhite += amount;
                     Debug.Log("White: " + enemyManaWhite.ToString());
                     break;
 
                 case 'c':
-                    enemyManaColorless++;
+                    enemyManaColorless += amount;
                     Debug.Log("Colorless: " + enemyManaColorless.ToString());
                     break;
             }

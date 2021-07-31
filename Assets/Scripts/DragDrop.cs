@@ -58,7 +58,10 @@ public class DragDrop : MonoBehaviour
         isDragging = false;
 
         //If the card is dragged over the Stack and it is not a land place it there.
-        if (isOverDropZone && dropZone.CompareTag("Stack") && gameObject.GetComponent<CardDisplay>().card.cardType != "Basic Land" && gameObject.GetComponent<CardDisplay>().card.cardType != "Land")
+        if (isOverDropZone && dropZone.CompareTag("Stack") 
+            && gameObject.GetComponent<CardDisplay>().card.cardType != "Basic Land" 
+            && gameObject.GetComponent<CardDisplay>().card.cardType != "Land" 
+            && (startParent.CompareTag("PlayerHand") || startParent.CompareTag("EnemyHand")))
         {
             transform.SetParent(dropZone.transform, false);
         }

@@ -16,4 +16,11 @@ public class Card : ScriptableObject
     public int cmc;
     public int power;
     public int toughness;
+    public int redManaCost;
+    public int blueManaCost;
+    public int greenManaCost;
+    public int blackManaCost;
+    public int whiteManaCost;
+    public int colorlessManaCost;
+    public int genericManaCost;
 }

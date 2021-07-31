@@ -66,7 +66,74 @@ public class TheStack : MonoBehaviour
                     lastScript.wasCastThisPhase = false;
                     lastTransform.SetParent(playerHand.transform, false);
                 }
-                
+                //When the card is on the stack if there is not enough mana in the pool and the card is not marked as paid, return to hand.
+                else if (
+                    (((gameManagerScript.playerManaRed - lastScript.card.redManaCost) < 0) 
+                    || ((gameManagerScript.playerManaBlue - lastScript.card.blueManaCost) < 0) 
+                    || ((gameManagerScript.playerManaGreen - lastScript.card.greenManaCost) < 0) 
+                    || ((gameManagerScript.playerManaBlack - lastScript.card.blackManaCost) < 0)
+                    || ((gameManagerScript.playerManaWhite - lastScript.card.whiteManaCost) < 0)
+                    || ((gameManagerScript.playerManaColorless - lastScript.card.colorlessManaCost) < 0)
+                    || ((gameManagerScript.playerManaRed + gameManagerScript.playerManaBlue + gameManagerScript.playerManaGreen + gameManagerScript.playerManaBlack + gameManagerScript.playerManaWhite + gameManagerScript.playerManaColorless) < lastScript.card.cmc))
+                    && lastScript.manaPaid == false
+                    )
+                {
+                    Debug.Log("You don't have enough mana!");
+                    gameManagerScript.timesPassed = tempTimesPassed;
+                    lastScript.wasCastThisPhase = false;
+                    lastTransform.SetParent(playerHand.transform, false);
+                }
+                //If the mana has not already been paid automatically spend the colored mana then automatically spend the remaing mana cost in this order: crugbw, then mark as paid.
+                else if(lastScript.manaPaid == false)
+                {
+                    gameManagerScript.addToManaPool('c', "Player", -lastScript.card.colorlessManaCost);
+                    gameManagerScript.addToManaPool('r', "Player", -lastScript.card.redManaCost);
+                    gameManagerScript.addToManaPool('u', "Player", -lastScript.card.blueManaCost);
+                    gameManagerScript.addToManaPool('g', "Player", -lastScript.card.greenManaCost);
+                    gameManagerScript.addToManaPool('b', "Player", -lastScript.card.blackManaCost);
+                    gameManagerScript.addToManaPool('w', "Player", -lastScript.card.whiteManaCost);
+
+                    int remainingCost = lastScript.card.genericManaCost;
+
+                    while (remainingCost > 0)
+                    {
+                        if(gameManagerScript.playerManaColorless > 0)
+                        {
+                            remainingCost--;
+                            gameManagerScript.addToManaPool('c', "Player", -1);
+                        }
+                        else if (gameManagerScript.playerManaRed > 0)
+                        {
+                            remainingCost--;
+                            gameManagerScript.addToManaPool('r', "Player", -1);
+                        }
+                        else if (gameManagerScript.playerManaBlue > 0)
+                        {
+                            remainingCost--;
+                            gameManagerScript.addToManaPool('u', "Player", -1);
+                        }
+                        else if (gameManagerScript.playerManaGreen > 0)
+                        {
+                            remainingCost--;
+                            gameManagerScript.addToManaPool('g', "Player", -1);
+                        }
+                        else if (gameManagerScript.playerManaBlack > 0)
+                        {
+                            remainingCost--;
+                            gameManagerScript.addToManaPool('b', "Player", -1);
+                        }
+                        else if (gameManagerScript.playerManaWhite > 0)
+                        {
+                            remainingCost--;
+                            gameManagerScript.addToManaPool('w', "Player", -1);
+                        }
+                    }
+
+                    lastScript.manaPaid = true;
+
+
+                }
+                 
             }
             //If the card in the stack is an Enemy Card execute this code.
             else if (transform.GetChild(transform.childCount - 1).CompareTag("EnemyCard"))
@@ -92,6 +159,74 @@ public class TheStack : MonoBehaviour
                     gameManagerScript.timesPassed = tempTimesPassed;
                     lastScript.wasCastThisPhase = false;
                     lastTransform.SetParent(enemyHand.transform, false);
+                }
+                //When the card is on the stack if there is not enough mana in the pool and the card is not marked as paid, return to hand.
+                else if (
+                    (((gameManagerScript.enemyManaRed - lastScript.card.redManaCost) < 0)
+                    || ((gameManagerScript.enemyManaBlue - lastScript.card.blueManaCost) < 0)
+                    || ((gameManagerScript.enemyManaGreen - lastScript.card.greenManaCost) < 0)
+                    || ((gameManagerScript.enemyManaBlack - lastScript.card.blackManaCost) < 0)
+                    || ((gameManagerScript.enemyManaWhite - lastScript.card.whiteManaCost) < 0)
+                    || ((gameManagerScript.enemyManaColorless - lastScript.card.colorlessManaCost) < 0)
+                    || ((gameManagerScript.enemyManaRed + gameManagerScript.enemyManaBlue + gameManagerScript.enemyManaGreen + gameManagerScript.enemyManaBlack + gameManagerScript.enemyManaWhite + gameManagerScript.enemyManaColorless) < lastScript.card.cmc))
+                    && lastScript.manaPaid == false
+                    )
+                {
+                    Debug.Log("You don't have enough mana!");
+                    gameManagerScript.timesPassed = tempTimesPassed;
+                    lastScript.wasCastThisPhase = false;
+                    lastTransform.SetParent(enemyHand.transform, false);
+                }
+                //If the mana has not already been paid automatically spend the colored mana then automatically spend the remaing mana cost in this order: crugbw, then mark as paid.
+                else if (lastScript.manaPaid == false)
+                {
+
+                    gameManagerScript.addToManaPool('c', "Enemy", -lastScript.card.colorlessManaCost);
+                    gameManagerScript.addToManaPool('r', "Enemy", -lastScript.card.redManaCost);
+                    gameManagerScript.addToManaPool('u', "Enemy", -lastScript.card.blueManaCost);
+                    gameManagerScript.addToManaPool('g', "Enemy", -lastScript.card.greenManaCost);
+                    gameManagerScript.addToManaPool('b', "Enemy", -lastScript.card.blackManaCost);
+                    gameManagerScript.addToManaPool('w', "Enemy", -lastScript.card.whiteManaCost);
+
+                    int remainingCost = lastScript.card.genericManaCost;
+
+                    while (remainingCost > 0)
+                    {
+                        if (gameManagerScript.enemyManaColorless > 0)
+                        {
+                            remainingCost--;
+                            gameManagerScript.addToManaPool('c', "Enemy", -1);
+                        }
+                        else if (gameManagerScript.enemyManaRed > 0)
+                        {
+                            remainingCost--;
+                            gameManagerScript.addToManaPool('r', "Enemy", -1);
+                        }
+                        else if (gameManagerScript.enemyManaBlue > 0)
+                        {
+                            remainingCost--;
+                            gameManagerScript.addToManaPool('u', "Enemy", -1);
+                        }
+                        else if (gameManagerScript.enemyManaGreen > 0)
+                        {
+                            remainingCost--;
+                            gameManagerScript.addToManaPool('g', "Enemy", -1);
+                        }
+                        else if (gameManagerScript.enemyManaBlack > 0)
+                        {
+                            remainingCost--;
+                            gameManagerScript.addToManaPool('b', "Enemy", -1);
+                        }
+                        else if (gameManagerScript.enemyManaWhite > 0)
+                        {
+                            remainingCost--;
+                            gameManagerScript.addToManaPool('w', "Enemy", -1);
+                        }
+                    }
+
+                    lastScript.manaPaid = true;
+
+
                 }
 
             }
